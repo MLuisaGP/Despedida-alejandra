@@ -379,3 +379,78 @@
         }
     }
 }
+
+
+/* ==============================================================================
+   MODAL DE LECTURA DE RECUERDOS & ESTILOS DE VISTA DE DETALLE
+   ============================================================================== */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(30, 25, 22, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.modal-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    border: 1.5px solid #C5A059;
+    width: 100%;
+    max-width: 680px;
+    max-height: 90vh;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+    button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.guestbook-row {
+    transition: background-color 0.15s ease;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(197, 160, 89, 0.08) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .modal-backdrop {
+        padding: 12px;
+    }
+    .modal-card {
+        border-radius: 18px;
+        max-height: 94vh;
+    }
+}

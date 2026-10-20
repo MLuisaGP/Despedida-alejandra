@@ -125,11 +125,11 @@ try {
             </a>
 
             <!-- Botón Hamburguesa para Móvil -->
-            <button type="button" class="navbar__toggle" id="navbar-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="navbar-menu">
+            <!-- <button type="button" class="navbar__toggle" id="navbar-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="navbar-menu">
                 <span class="navbar__toggle-line"></span>
                 <span class="navbar__toggle-line"></span>
                 <span class="navbar__toggle-line"></span>
-            </button>
+            </button> -->
 
             <!-- Menú de Navegación (PC y Móvil) -->
             <nav>
@@ -145,7 +145,7 @@ try {
             </nav>
         </div>
         <!-- Fondo oscurecido para menú móvil -->
-        <div class="navbar__backdrop" id="navbar-backdrop"></div>
+        <!-- <div class="navbar__backdrop" id="navbar-backdrop"></div> -->
     </header>
 
     <!-- ==========================================

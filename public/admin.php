@@ -409,6 +409,73 @@ try {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        /* Estilos garantizados para el Modal de Lectura de Dedicatorias */
+        .modal-backdrop {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: rgba(30, 25, 22, 0.72) !important;
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            z-index: 99999 !important;
+            display: none;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 20px !important;
+            box-sizing: border-box !important;
+            overflow-y: auto !important;
+        }
+        .modal-card {
+            background: #FFFFFF !important;
+            border-radius: 24px !important;
+            border: 1.5px solid #C5A059 !important;
+            width: 100% !important;
+            max-width: 680px !important;
+            max-height: 90vh !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(197, 160, 89, 0.25) !important;
+            overflow: hidden !important;
+            position: relative !important;
+            display: flex !important;
+            flex-direction: column !important;
+            margin: auto !important;
+            animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal-card button:disabled {
+            opacity: 0.4 !important;
+            cursor: not-allowed !important;
+        }
+        .guestbook-row {
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+        .guestbook-row:hover {
+            background: rgba(197, 160, 89, 0.08) !important;
+        }
+        @media (max-width: 640px) {
+            .modal-backdrop {
+                padding: 12px !important;
+            }
+            .modal-card {
+                border-radius: 18px !important;
+                max-height: 94vh !important;
+            }
+        }
+    </style>
     <!-- Favicon e Íconos Oficiales (Monograma A&J) -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
@@ -494,7 +561,7 @@ try {
                     </svg>
                 </div>
                 <div class="admin-dashboard__metric-card-info">
-                    <div class="admin-dashboard__metric-card-number"><?= count(array_filter($attendees, fn($a) => !$a->isConfirmed())) ?></div>
+                    <div class="admin-dashboard__metric-card-number"><?= count(array_filter($attendees, fn($a) => !$a->isAttending())) ?></div>
                     <div class="admin-dashboard__metric-card-label">No Asistirán</div>
                 </div>
             </div>

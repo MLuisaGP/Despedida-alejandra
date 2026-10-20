@@ -73,6 +73,11 @@ class RsvpResponse implements JsonSerializable
         return $this->attendanceStatus === 'confirmed';
     }
 
+    public function isConfirmed(): bool
+    {
+        return $this->isAttending();
+    }
+
     public function getRoleType(): string
     {
         return $this->roleType;
