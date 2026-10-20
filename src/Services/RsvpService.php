@@ -15,15 +15,15 @@ use DomainException;
  */
 class RsvpService
 {
-    public const DEFAULT_MAX_ATTENDEES = 100;
+    public const DEFAULT_MAX_ATTENDEES = 0; // 0 = Sin límite de cupo
 
     private RsvpRepository $repository;
     private int $maxAttendees;
 
-    public function __construct(RsvpRepository $repository, int $maxAttendees = self::DEFAULT_MAX_ATTENDEES)
+    public function __construct(RsvpRepository $repository, int $maxAttendees = 0)
     {
         $this->repository = $repository;
-        $this->maxAttendees = $maxAttendees >= 0 ? $maxAttendees : self::DEFAULT_MAX_ATTENDEES;
+        $this->maxAttendees = max(0, $maxAttendees);
     }
 
     /**
@@ -47,6 +47,9 @@ class RsvpService
      */
     public function getAvailableSpots(): int
     {
+        if ($this->maxAttendees <= 0) {
+            return 999999;
+        }
         return max(0, $this->maxAttendees - $this->getConfirmedCount());
     }
 
@@ -55,6 +58,9 @@ class RsvpService
      */
     public function isCapacityFull(): bool
     {
+        if ($this->maxAttendees <= 0) {
+            return false;
+        }
         return $this->getConfirmedCount() >= $this->maxAttendees;
     }
 
@@ -97,8 +103,8 @@ class RsvpService
             $companions = 0;
         }
 
-        // CONTROL DE CUPO MÁXIMO DE ASISTENCIA (100 PERSONAS)
-        if ($status === 'confirmed') {
+        // CONTROL DE CUPO MÁXIMO DE ASISTENCIA (Opcional, desactivado para asistencia ilimitada)
+        if ($this->maxAttendees > 0 && $status === 'confirmed') {
             $currentConfirmed = $this->getConfirmedCount();
             $incomingPeople = 1 + $companions;
 

@@ -49,21 +49,42 @@ function initRsvp() {
         }
 
         try {
-            const endpoint = (window.API_BASE_URL || '') + '/api/rsvp';
+            const payload = {
+                first_name: firstName,
+                last_name: lastName,
+                attendance_status,
+                phone
+            };
 
-            const response = await fetch(endpoint, {
+            // Intentar primero con la ruta estándar /api/rsvp
+            let endpoint = (window.API_BASE_URL || '') + '/api/rsvp';
+            let response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    first_name: firstName,
-                    last_name: lastName,
-                    attendance_status,
-                    phone
-                })
+                body: JSON.stringify(payload)
             });
+
+            // Si el servidor devolvió HTML (ej. falta mod_rewrite en Apache o respuesta index.php), recurrir a api.php directamente
+            let contentType = response.headers.get('content-type') || '';
+            if (!contentType.includes('application/json')) {
+                const fallbackEndpoint = (window.API_BASE_URL || '') + '/api.php?action=rsvp';
+                response = await fetch(fallbackEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                contentType = response.headers.get('content-type') || '';
+            }
+
+            if (!contentType.includes('application/json')) {
+                throw new Error('El servidor no respondió en formato JSON. Por favor recarga la página e intenta de nuevo.');
+            }
 
             const result = await response.json();
 

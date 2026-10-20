@@ -26,14 +26,21 @@ try {
     $guestbookController = new GuestbookController($guestbookService);
 
     // Inyección de dependencias para RSVP con control de cupo
-    $maxAttendees = (int)($_ENV['MAX_ATTENDEES'] ?? 100);
+    $maxAttendees = (int)($_ENV['MAX_ATTENDEES'] ?? 0); // 0 = Sin límite de cupo
     $rsvpRepo = new RsvpRepository($db);
     $rsvpService = new RsvpService($rsvpRepo, $maxAttendees);
     $rsvpController = new RsvpController($rsvpService);
 
     // Determinar la acción solicitada por endpoint o query parameter
-    $method = $_SERVER['REQUEST_METHOD'];
+    $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
     $endpoint = $_GET['endpoint'] ?? $_GET['action'] ?? '';
+    if (empty($endpoint)) {
+        $path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?? '';
+        $cleanPath = trim($path, '/');
+        if (str_starts_with($cleanPath, 'api/')) {
+            $endpoint = substr($cleanPath, 4);
+        }
+    }
     $endpoint = trim(strtolower($endpoint), '/');
 
     // Enrutamiento simple y limpio

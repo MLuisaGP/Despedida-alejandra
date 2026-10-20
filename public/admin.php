@@ -42,7 +42,7 @@ if ((isset($_GET['action']) && $_GET['action'] === 'logout') || strpos($_SERVER[
 }
 
 // 2. Procesar Login (POST)
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'login') {
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['action']) && $_POST['action'] === 'login') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
 
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 // 4. Eliminar Dedicatoria del Libro de Recuerdos
 if ($authService->isAuthenticated()) {
     $rawInput = [];
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         $rawInput = $_POST;
         if (empty($rawInput)) {
             $json = file_get_contents('php://input');
@@ -143,7 +143,7 @@ if (!$authService->isAuthenticated()):
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <!-- Favicon e Íconos Oficiales (Monograma A&J) -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
@@ -212,7 +212,7 @@ try {
     $db = Database::getConnection();
 
     // Servicios con control de cupo
-    $maxAttendees = (int)($_ENV['MAX_ATTENDEES'] ?? 100);
+    $maxAttendees = (int)($_ENV['MAX_ATTENDEES'] ?? 0); // 0 = Sin límite de cupo
     $rsvpRepo = new RsvpRepository($db);
     $rsvpService = new RsvpService($rsvpRepo, $maxAttendees);
     $attendees = $rsvpService->getAllAttendees();
@@ -408,7 +408,7 @@ try {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <!-- Favicon e Íconos Oficiales (Monograma A&J) -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
@@ -462,15 +462,8 @@ try {
                     </svg>
                 </div>
                 <div class="admin-dashboard__metric-card-info">
-                    <div class="admin-dashboard__metric-card-number">
-                        <?= $totalConfirmedPeople ?> <span style="font-size: 1.1rem; color: #888; font-weight: normal;">/ <?= $maxAttendees ?></span>
-                    </div>
-                    <div class="admin-dashboard__metric-card-label">
-                        Personas Confirmadas (<?= $totalConfirmedPeople >= $maxAttendees ? '<strong style="color: #c0392b;">Cupo Lleno</strong>' : ($maxAttendees - $totalConfirmedPeople) . ' disponibles' ?>)
-                    </div>
-                    <div style="width: 100%; height: 5px; background: rgba(0,0,0,0.08); border-radius: 4px; margin-top: 8px; overflow: hidden;">
-                        <div style="height: 100%; width: <?= min(100, round(($totalConfirmedPeople / $maxAttendees) * 100)) ?>%; background: <?= $totalConfirmedPeople >= $maxAttendees ? '#c0392b' : '#2A9D8F' ?>; border-radius: 4px;"></div>
-                    </div>
+                    <div class="admin-dashboard__metric-card-number"><?= $totalConfirmedPeople ?></div>
+                    <div class="admin-dashboard__metric-card-label">Personas Confirmadas</div>
                 </div>
             </div>
 
@@ -491,19 +484,18 @@ try {
                 </div>
             </div>
 
-            <!-- Métrica 3: Lugares Disponibles -->
+            <!-- Métrica 3: No Asistirán -->
             <div class="admin-dashboard__metric-card">
-                <div class="admin-dashboard__metric-card-icon" style="background: rgba(42, 157, 143, 0.12); color: #2A9D8F;">
+                <div class="admin-dashboard__metric-card-icon" style="background: rgba(194, 123, 127, 0.14); color: #C27B7F;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <line x1="19" y1="8" x2="19" y2="14"></line>
-                        <line x1="22" y1="11" x2="16" y2="11"></line>
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
                     </svg>
                 </div>
                 <div class="admin-dashboard__metric-card-info">
-                    <div class="admin-dashboard__metric-card-number"><?= max(0, $maxAttendees - $totalConfirmedPeople) ?></div>
-                    <div class="admin-dashboard__metric-card-label">Lugares Disponibles</div>
+                    <div class="admin-dashboard__metric-card-number"><?= count(array_filter($attendees, fn($a) => !$a->isConfirmed())) ?></div>
+                    <div class="admin-dashboard__metric-card-label">No Asistirán</div>
                 </div>
             </div>
 

@@ -47,16 +47,37 @@ function initGuestbook() {
         }
 
         try {
-            const endpoint = (window.API_BASE_URL || '') + '/api/guestbook';
+            const payload = { author, message };
 
-            const response = await fetch(endpoint, {
+            // Intentar primero con la ruta estándar /api/guestbook
+            let endpoint = (window.API_BASE_URL || '') + '/api/guestbook';
+            let response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({ author, message })
+                body: JSON.stringify(payload)
             });
+
+            // Si el servidor devolvió HTML (ej. mod_rewrite no activo), recurrir a api.php directamente
+            let contentType = response.headers.get('content-type') || '';
+            if (!contentType.includes('application/json')) {
+                const fallbackEndpoint = (window.API_BASE_URL || '') + '/api.php?action=guestbook';
+                response = await fetch(fallbackEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                contentType = response.headers.get('content-type') || '';
+            }
+
+            if (!contentType.includes('application/json')) {
+                throw new Error('El servidor no respondió en formato JSON. Por favor recarga la página e intenta de nuevo.');
+            }
 
             const result = await response.json();
 

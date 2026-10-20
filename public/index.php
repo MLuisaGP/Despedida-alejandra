@@ -2,6 +2,27 @@
 
 declare(strict_types=1);
 
+// ==============================================================================
+// ENRUTADOR INTERNO (Soporte para servidor local y producción)
+// ==============================================================================
+$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+$cleanPath = trim($requestPath, '/');
+
+// 1. Redirigir /admin y cualquier subruta (/admin/logout, /admin/export, /admin/recuerdo/...)
+if ($cleanPath === 'admin' || str_starts_with($cleanPath, 'admin/')) {
+    require __DIR__ . '/admin.php';
+    exit;
+}
+
+// 2. Redirigir /api y endpoints (/api/rsvp, /api/guestbook, etc.)
+if ($cleanPath === 'api' || str_starts_with($cleanPath, 'api/')) {
+    if (empty($_GET['endpoint']) && strlen($cleanPath) > 3) {
+        $_GET['endpoint'] = substr($cleanPath, 4);
+    }
+    require __DIR__ . '/api.php';
+    exit;
+}
+
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Config\Database;
@@ -28,7 +49,6 @@ $eventMapsUrl     = $_ENV['EVENT_MAPS_URL'] ?? '';
 
 $costGuest        = $_ENV['COSTO_INVITADO'] ?? 350;
 $costOrganizer    = $_ENV['COSTO_ORGANIZADOR'] ?? 500;
-$maxAttendees     = (int)($_ENV['MAX_ATTENDEES'] ?? 100);
 
 // Extraer nombres individuales para el diseño
 $namesArray = preg_split('/\s+(?:y|&)\s+/i', $coupleNames);
@@ -46,8 +66,6 @@ $bankWhatsapp     = $_ENV['BANK_WHATSAPP'] ?? '';
 // Variables de estado de asistencia y libro de firmas
 $initialMessages = [];
 $confirmedCount  = 0;
-$isCapacityFull  = false;
-$availableSpots  = $maxAttendees;
 $dbConnected     = false;
 
 try {
@@ -58,12 +76,10 @@ try {
     $guestbookService = new GuestbookService($guestbookRepo);
     $initialMessages = $guestbookService->getRecentMessages(20);
 
-    // Estado del cupo de asistencia (Límite 100 personas)
+    // Estado de asistencia
     $rsvpRepo = new RsvpRepository($db);
-    $rsvpService = new RsvpService($rsvpRepo, $maxAttendees);
+    $rsvpService = new RsvpService($rsvpRepo);
     $confirmedCount = $rsvpService->getConfirmedCount();
-    $isCapacityFull = $rsvpService->isCapacityFull();
-    $availableSpots = $rsvpService->getAvailableSpots();
 
     $dbConnected = true;
 } catch (\Throwable $e) {
@@ -487,16 +503,6 @@ try {
                         Por favor confírmanos antes del 25 de Octubre de 2026 para garantizar la mejor organización de lugares y banquete.
                     </p>
                     <div style="margin-top: 14px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-                        <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #8E4A49; font-weight: 600; background: rgba(197, 160, 89, 0.15); border: 1px solid rgba(197, 160, 89, 0.35); padding: 6px 18px; border-radius: 30px;">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                            Cupo Limitado: <?= $maxAttendees ?> personas (<?= $isCapacityFull ? '<strong style="color: #c0392b;">Cupo Lleno</strong>' : $availableSpots . ' lugares disponibles' ?>)
-                        </span>
-
                         <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #3A2E39; font-weight: 600; background: rgba(197, 160, 89, 0.15); border: 1px solid rgba(197, 160, 89, 0.35); padding: 6px 16px; border-radius: 30px;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"></circle>
@@ -547,24 +553,7 @@ try {
                         </div>
                     </div>
 
-                    <!-- Banner de Cupo Completo -->
-                    <div id="rsvp-capacity-banner" style="<?= $isCapacityFull ? 'display: block;' : 'display: none;' ?> background: rgba(142, 74, 73, 0.08); border: 2px dashed #8E4A49; border-radius: 12px; padding: 30px 20px; text-align: center; margin-bottom: 20px;">
-                        <div style="width: 52px; height: 52px; margin: 0 auto 12px; background: rgba(142, 74, 73, 0.14); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8E4A49" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="8" x2="12" y2="12"></line>
-                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                            </svg>
-                        </div>
-                        <h3 style="color: #8E4A49; font-size: 1.4rem; margin-bottom: 8px; font-family: 'Cormorant Garamond', serif; font-weight: 700;">
-                            ¡Cupo Máximo Alcanzado!
-                        </h3>
-                        <p style="color: #4A3E3D; font-size: 0.95rem; line-height: 1.6; margin: 0 auto; max-width: 520px;">
-                            Agradecemos profundamente todo el amor e interés en acompañarnos. Se ha cubierto el límite máximo de <strong><?= $maxAttendees ?> personas</strong> registradas para la despedida.
-                        </p>
-                    </div>
-
-                    <form id="rsvp-form" class="form" method="POST" action="/api/rsvp" <?= $isCapacityFull ? 'style="display: none;"' : '' ?>>
+                    <form id="rsvp-form" class="form" method="POST" action="/api/rsvp">
                         <div class="rsvp-inputs-wrapper" style="background: #FFFFFF; border-radius: 18px; margin-bottom: 10px;">
                             <div class="form__row">
                                 <div class="form__group">
