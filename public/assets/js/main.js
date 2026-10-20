@@ -184,8 +184,70 @@ function initPetalsCanvas() {
     animate();
 }
 
+// --- MENÚ HAMBURGUESA RESPONSIVE ---
+function initMobileMenu() {
+    const toggleBtn = document.getElementById('navbar-toggle');
+    const menu = document.getElementById('navbar-menu');
+    const backdrop = document.getElementById('navbar-backdrop');
+    if (!toggleBtn || !menu) return;
+
+    function openMenu() {
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        menu.classList.add('is-open');
+        if (backdrop) backdrop.classList.add('is-visible');
+        document.body.classList.add('menu-open');
+    }
+
+    function closeMenu() {
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('is-open');
+        if (backdrop) backdrop.classList.remove('is-visible');
+        document.body.classList.remove('menu-open');
+    }
+
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = toggleBtn.getAttribute('aria-expanded') === 'true';
+        if (isOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+
+    // Cerrar al hacer clic en cualquier enlace del menú móvil
+    const links = menu.querySelectorAll('.navbar__link');
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+        });
+    });
+
+    // Cerrar al hacer clic en el backdrop oscurecido
+    if (backdrop) {
+        backdrop.addEventListener('click', () => {
+            closeMenu();
+        });
+    }
+
+    // Cerrar con la tecla Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && toggleBtn.getAttribute('aria-expanded') === 'true') {
+            closeMenu();
+        }
+    });
+
+    // Cerrar automáticamente si la ventana se amplía a pantalla de escritorio
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && toggleBtn.getAttribute('aria-expanded') === 'true') {
+            closeMenu();
+        }
+    });
+}
+
 // Inicialización general al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
     initClipboardCopy();
     initPetalsCanvas();
+    initMobileMenu();
 });

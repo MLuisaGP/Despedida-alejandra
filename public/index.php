@@ -105,11 +105,19 @@ try {
     <header class="navbar">
         <div class="container navbar__content">
             <a href="#inicio" class="navbar__logo" style="display: inline-flex; align-items: center; gap: 10px;">
-
                 <span><?= htmlspecialchars($brideName) ?> <span>&</span> <?= htmlspecialchars($groomName) ?></span>
             </a>
+
+            <!-- Botón Hamburguesa para Móvil -->
+            <button type="button" class="navbar__toggle" id="navbar-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="navbar-menu">
+                <span class="navbar__toggle-line"></span>
+                <span class="navbar__toggle-line"></span>
+                <span class="navbar__toggle-line"></span>
+            </button>
+
+            <!-- Menú de Navegación (PC y Móvil) -->
             <nav>
-                <ul class="navbar__menu">
+                <ul class="navbar__menu" id="navbar-menu">
                     <li><a href="#inicio" class="navbar__link">Inicio</a></li>
                     <li><a href="#cuenta-regresiva" class="navbar__link">Cuenta Regresiva</a></li>
                     <li><a href="#momentos" class="navbar__link">Momentos</a></li>
@@ -120,6 +128,8 @@ try {
                 </ul>
             </nav>
         </div>
+        <!-- Fondo oscurecido para menú móvil -->
+        <div class="navbar__backdrop" id="navbar-backdrop"></div>
     </header>
 
     <!-- ==========================================
