@@ -1,0 +1,815 @@
+// ==========================================
+// SECCIONES DE LA ONE-PAGE
+// ==========================================
+
+@import "variables";
+@import "mixins";
+
+// --- BARRA DE NAVEGACIÓN ---
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 16px 0;
+    background: rgba(250, 247, 242, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+    transition: $transition-smooth;
+
+    &__content {
+        @include flex-between;
+    }
+
+    &__logo {
+        font-family: $font-serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: $color-gold-dark;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        span {
+            font-family: $font-script;
+            font-size: 1.7rem;
+            color: $color-rose;
+        }
+    }
+
+    &__menu {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        list-style: none;
+
+        @include tablet {
+            display: none; // Menú compacto o responsive
+        }
+    }
+
+    &__link {
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: $color-text-muted;
+        position: relative;
+        padding-bottom: 4px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: $color-gold;
+            transition: $transition-smooth;
+        }
+
+        &:hover {
+            color: $color-gold-dark;
+
+            &::after {
+                width: 100%;
+            }
+        }
+    }
+}
+
+// --- HERO SECTION ---
+.hero {
+    position: relative;
+    min-height: 100vh;
+    padding: 130px 0 80px;
+    @include flex-center;
+    background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.85) 0%, rgba(250, 247, 242, 0.45) 100%);
+
+    &__grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 50px;
+        align-items: center;
+        text-align: left;
+
+        @include tablet {
+            grid-template-columns: 1fr;
+            text-align: center;
+            gap: 40px;
+        }
+    }
+
+    &__content {
+        position: relative;
+        z-index: 2;
+
+        @include tablet {
+            margin: 0 auto;
+            max-width: 600px;
+        }
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 22px;
+        background: rgba(197, 160, 89, 0.12);
+        border: 1px solid rgba(197, 160, 89, 0.35);
+        border-radius: $radius-full;
+        font-size: 0.76rem;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: $color-gold-dark;
+        margin-bottom: 20px;
+    }
+
+    &__subtitle-top {
+        font-family: $font-script;
+        font-size: 2.8rem;
+        color: $color-rose;
+        margin-bottom: 6px;
+
+        @include mobile {
+            font-size: 2.2rem;
+        }
+    }
+
+    &__names {
+        font-size: 4.2rem;
+        font-weight: 400;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        color: $color-text;
+        letter-spacing: -0.02em;
+
+        .ampersand {
+            font-family: $font-script;
+            color: $color-gold;
+            font-size: 3.8rem;
+            margin: 0 8px;
+            font-weight: 300;
+        }
+
+        @include mobile {
+            font-size: 2.8rem;
+            .ampersand {
+                font-size: 2.5rem;
+            }
+        }
+    }
+
+    &__quote {
+        font-family: $font-serif;
+        font-size: 1.25rem;
+        font-style: italic;
+        color: $color-text-muted;
+        margin-bottom: 28px;
+        line-height: 1.6;
+
+        @include mobile {
+            font-size: 1.1rem;
+        }
+    }
+
+    &__meta {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 24px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(197, 160, 89, 0.25);
+        border-radius: $radius-full;
+        box-shadow: $shadow-sm;
+        margin-bottom: 32px;
+
+        @include tablet {
+            justify-content: center;
+        }
+
+        &-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: $color-text;
+
+            svg {
+                width: 17px;
+                height: 17px;
+                color: $color-gold;
+            }
+        }
+
+        &-divider {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: $color-gold;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+
+        @include tablet {
+            justify-content: center;
+        }
+    }
+
+    // Marco de foto romántico tipo arco editorial
+    &__photo-frame {
+        position: relative;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 12px;
+        background: #FFFFFF;
+        border: 1px solid rgba(197, 160, 89, 0.35);
+        border-radius: 200px 200px $radius-lg $radius-lg;
+        box-shadow: $shadow-lg;
+        transition: $transition-smooth;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 1px dashed rgba(197, 160, 89, 0.4);
+            border-radius: 194px 194px ($radius-lg - 4px) ($radius-lg - 4px);
+            pointer-events: none;
+        }
+
+        &:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(197, 160, 89, 0.22);
+        }
+
+        img {
+            width: 100%;
+            height: 480px;
+            object-fit: cover;
+            border-radius: 188px 188px ($radius-lg - 8px) ($radius-lg - 8px);
+            display: block;
+
+            @include mobile {
+                height: 380px;
+            }
+        }
+
+        &-tag {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FFFFFF;
+            border: 1px solid $color-gold;
+            padding: 8px 22px;
+            border-radius: $radius-full;
+            box-shadow: $shadow-md;
+            white-space: nowrap;
+            font-family: $font-serif;
+            font-size: 0.95rem;
+            color: $color-text;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            svg {
+                width: 14px;
+                height: 14px;
+                fill: $color-rose;
+            }
+        }
+    }
+}
+
+// --- GALERÍA / NUESTROS MOMENTOS ---
+.gallery-section {
+    padding: 90px 0;
+    background: #FFFFFF;
+    border-top: 1px solid rgba(197, 160, 89, 0.15);
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+
+        @include desktop {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @include tablet {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include mobile {
+            grid-template-columns: 1fr;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+    }
+
+    &__item {
+        position: relative;
+        border-radius: $radius-lg;
+        overflow: hidden;
+        background: #FAF7F2;
+        border: 1px solid rgba(197, 160, 89, 0.25);
+        box-shadow: $shadow-card;
+        aspect-ratio: 4 / 5;
+        transition: $transition-smooth;
+
+        &:hover {
+            transform: translateY(-6px);
+            border-color: $color-gold;
+            box-shadow: $shadow-lg;
+
+            img {
+                transform: scale(1.06);
+            }
+
+            .gallery-section__overlay {
+                opacity: 1;
+            }
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 40%, rgba(30, 27, 24, 0.85) 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 20px 18px;
+        color: #FFFFFF;
+        opacity: 0.85;
+        transition: opacity 0.35s ease;
+
+        &-title {
+            font-family: $font-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #FFFFFF;
+        }
+
+        &-desc {
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
+    }
+}
+
+// --- CONTADOR EN VIVO ---
+.countdown-section {
+    padding: 60px 0 80px;
+    background: #FFFFFF;
+    border-top: 1px solid rgba(197, 160, 89, 0.15);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+    position: relative;
+
+    &__header {
+        text-align: center;
+        margin-bottom: 36px;
+
+        h3 {
+            font-size: 1.8rem;
+            color: $color-text;
+            margin-bottom: 6px;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: $color-text-muted;
+        }
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        max-width: 680px;
+        margin: 0 auto;
+
+        @include mobile {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+    }
+
+    &__card {
+        background: $color-bg-card-alt;
+        border: 1px solid rgba(197, 160, 89, 0.3);
+        border-radius: $radius-lg;
+        padding: 24px 16px;
+        text-align: center;
+        box-shadow: $shadow-card;
+        position: relative;
+        overflow: hidden;
+        transition: $transition-smooth;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: $gradient-gold;
+        }
+
+        &:hover {
+            transform: translateY(-4px);
+            border-color: $color-gold;
+            box-shadow: $shadow-lg;
+        }
+    }
+
+    &__number {
+        font-family: $font-serif;
+        font-size: 3rem;
+        font-weight: 600;
+        line-height: 1;
+        color: $color-gold-dark;
+        margin-bottom: 6px;
+
+        @include mobile {
+            font-size: 2.4rem;
+        }
+    }
+
+    &__label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: $color-text-muted;
+    }
+}
+
+// --- DETALLES DEL EVENTO ---
+.details-section {
+    padding: 100px 0;
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        margin-bottom: 40px;
+
+        @include tablet {
+            grid-template-columns: 1fr;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+    }
+
+    &__card {
+        @include card-luxury;
+        padding: 40px 30px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: $gradient-gold-soft;
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            @include flex-center;
+            margin-bottom: 24px;
+            color: $color-gold-dark;
+
+            svg {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        &-title {
+            font-size: 1.5rem;
+            color: $color-text;
+            margin-bottom: 12px;
+        }
+
+        &-desc {
+            font-size: 0.98rem;
+            color: $color-text-muted;
+            margin-bottom: 22px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+    }
+
+    &__map-wrapper {
+        border-radius: $radius-lg;
+        overflow: hidden;
+        border: 2px solid rgba(197, 160, 89, 0.3);
+        box-shadow: $shadow-card;
+        background: #FFFFFF;
+        position: relative;
+        transition: $transition-smooth;
+
+        &:hover {
+            box-shadow: $shadow-lg;
+            border-color: $color-gold;
+        }
+
+        iframe {
+            width: 100%;
+            height: 380px;
+            border: 0;
+            display: block;
+
+            @include mobile {
+                height: 300px;
+            }
+        }
+    }
+}
+
+// --- SECCIÓN TRANSFERENCIA PARA EL SOBRE ---
+.transfer-section {
+    padding: 100px 0;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FAF7F2 100%);
+    border-top: 1px solid rgba(197, 160, 89, 0.15);
+
+    &__prices {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 40px;
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__price-card {
+        background: #FFFFFF;
+        border: 2px solid rgba(197, 160, 89, 0.25);
+        border-radius: $radius-lg;
+        padding: 28px 24px;
+        text-align: center;
+        transition: $transition-smooth;
+        position: relative;
+
+        &--featured {
+            border-color: $color-gold;
+            background: linear-gradient(180deg, #FFFFFF 0%, rgba(224, 197, 138, 0.08) 100%);
+            box-shadow: $shadow-md;
+        }
+
+        &-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: $gradient-gold;
+            color: #FFFFFF;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: $radius-full;
+        }
+
+        &-role {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: $color-text;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        &-amount {
+            font-family: $font-serif;
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: $color-gold-dark;
+            line-height: 1;
+            margin-bottom: 6px;
+
+            span {
+                font-family: $font-sans;
+                font-size: 1rem;
+                font-weight: 500;
+                color: $color-text-muted;
+            }
+        }
+
+        &-desc {
+            font-size: 0.85rem;
+            color: $color-text-muted;
+        }
+    }
+
+    &__box {
+        @include card-luxury;
+        padding: 36px 32px;
+        max-width: 680px;
+        margin: 0 auto;
+
+        @include mobile {
+            padding: 24px 18px;
+        }
+    }
+
+    &__item {
+        @include flex-between;
+        padding: 14px 0;
+        border-bottom: 1px dashed rgba(197, 160, 89, 0.25);
+
+        &:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        @include mobile {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        &-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: $color-text-muted;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        &-value {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: $font-sans;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: $color-text;
+        }
+    }
+}
+
+// --- SECCIÓN CONFIRMACIÓN DE ASISTENCIA (RSVP) ---
+.rsvp-section {
+    padding: 100px 0;
+
+    &__wrapper {
+        max-width: 640px;
+        margin: 0 auto;
+    }
+}
+
+// --- SECCIÓN LIBRO DE FIRMAS (GUESTBOOK) ---
+.guestbook-section {
+    padding: 100px 0;
+    background: #FFFFFF;
+    border-top: 1px solid rgba(197, 160, 89, 0.15);
+
+    &__wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+
+        @include tablet {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__wall {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        max-height: 600px;
+        overflow-y: auto;
+        padding-right: 8px;
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba(197, 160, 89, 0.3);
+            border-radius: 4px;
+        }
+    }
+
+    &__entry {
+        background: $color-bg-card-alt;
+        border: 1px solid rgba(197, 160, 89, 0.2);
+        border-radius: $radius-md;
+        padding: 20px 22px;
+        box-shadow: $shadow-sm;
+        transition: $transition-smooth;
+        position: relative;
+
+        &:hover {
+            border-color: rgba(197, 160, 89, 0.5);
+            box-shadow: $shadow-md;
+        }
+
+        &-header {
+            @include flex-between;
+            margin-bottom: 10px;
+        }
+
+        &-author {
+            font-family: $font-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: $color-text;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            svg {
+                width: 16px;
+                height: 16px;
+                color: $color-gold;
+            }
+        }
+
+        &-date {
+            font-size: 0.75rem;
+            color: $color-text-light;
+        }
+
+        &-message {
+            font-family: $font-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: $color-text-muted;
+            font-style: italic;
+            white-space: pre-line;
+        }
+    }
+
+    &__empty {
+        text-align: center;
+        padding: 40px 20px;
+        color: $color-text-muted;
+        font-family: $font-serif;
+        font-size: 1.1rem;
+        font-style: italic;
+    }
+}
+
+// --- FOOTER ---
+.footer {
+    padding: 60px 0 30px;
+    background: #1A1715;
+    color: #FAF7F2;
+    text-align: center;
+    border-top: 1px solid rgba(197, 160, 89, 0.2);
+
+    &__names {
+        font-family: $font-serif;
+        font-size: 2.2rem;
+        color: $color-gold-light;
+        margin-bottom: 10px;
+
+        span {
+            font-family: $font-script;
+            color: $color-rose;
+        }
+    }
+
+    &__quote {
+        font-family: $font-serif;
+        font-size: 1.05rem;
+        font-style: italic;
+        color: rgba(250, 247, 242, 0.7);
+        max-width: 500px;
+        margin: 0 auto 30px;
+    }
+
+    &__copy {
+        font-size: 0.8rem;
+        color: rgba(250, 247, 242, 0.4);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 24px;
+    }
+}

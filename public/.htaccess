@@ -1,0 +1,60 @@
+# ==============================================================================
+# ARCHIVO DE CONFIGURACIÓN APACHE (.htaccess) - CARPETA PUBLIC
+# Proyecto: Despedida de Solteros - Alejandra & Jesús
+# ==============================================================================
+
+# 1. Seguridad: Deshabilitar listado de directorios
+Options -Indexes
+
+# 2. Seguridad: Proteger archivos ocultos y de configuración
+<FilesMatch "^\.(env|git|htaccess)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 3. Motor de Reescritura de URLs limpias (Clean URLs)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Redirigir si se escribe index.php o /index a la raíz /
+    RewriteCond %{THE_REQUEST} \s/+(?:index\.php|index)[\s?] [NC]
+    RewriteRule ^ / [R=301,L]
+
+    # 2. Redirigir si se escribe otro .php en la URL a su versión limpia
+    RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
+    RewriteRule ^ /%1 [R=301,L]
+
+    # 3. Servir archivos y carpetas estáticas directamente (assets, css, js, imágenes)
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # 4. Rutas API (/api/...)
+    RewriteRule ^api/(.*)$ api.php?endpoint=$1 [QSA,L]
+    RewriteRule ^api/?$ api.php [QSA,L]
+
+    # 5. Rutas del Panel Administrativo (/admin, /admin/logout, /admin/export, /admin/recuerdo/ID)
+    RewriteRule ^admin/logout/?$ admin.php?action=logout [QSA,L]
+    RewriteRule ^admin/export/?$ admin.php?action=export_rsvp [QSA,L]
+    RewriteRule ^admin/recuerdo/([0-9]+)/?$ admin.php?recuerdo_id=$1 [QSA,L]
+    RewriteRule ^admin/?$ admin.php [QSA,L]
+
+    # 6. Ruta principal
+    RewriteRule ^index/?$ index.php [QSA,L]
+    RewriteRule ^$ index.php [QSA,L]
+</IfModule>
+
+# 4. Cabeceras de seguridad
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# 5. Codificación UTF-8 predeterminada
+AddDefaultCharset UTF-8

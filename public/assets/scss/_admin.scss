@@ -1,0 +1,381 @@
+// ==========================================
+// ESTILOS PARA EL PANEL DE ADMINISTRACIÓN
+// ==========================================
+
+@import "variables";
+@import "mixins";
+
+// Contenedor de Pantalla Completa para Login
+.admin-login {
+    min-height: 100vh;
+    @include flex-center;
+    padding: 30px 20px;
+    background: radial-gradient(circle at 50% 30%, #FFFFFF 0%, #F5EFE6 100%);
+
+    &__card {
+        @include card-luxury;
+        width: 100%;
+        max-width: 440px;
+        padding: 44px 36px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: $gradient-gold;
+        }
+    }
+
+    &__logo {
+        font-family: $font-serif;
+        font-size: 1.8rem;
+        color: $color-gold-dark;
+        margin-bottom: 6px;
+
+        span {
+            font-family: $font-script;
+            color: $color-rose;
+            font-size: 2.2rem;
+        }
+    }
+
+    &__title {
+        font-size: 1.25rem;
+        color: $color-text;
+        margin-bottom: 6px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    &__subtitle {
+        font-size: 0.88rem;
+        color: $color-text-muted;
+        margin-bottom: 28px;
+    }
+
+    &__alert {
+        padding: 12px 16px;
+        background: rgba(194, 123, 127, 0.12);
+        border-left: 4px solid $color-rose;
+        border-radius: $radius-sm;
+        color: $color-rose-dark;
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+}
+
+// Estructura del Dashboard
+.admin-dashboard {
+    min-height: 100vh;
+    background: #FAF7F2;
+    padding-bottom: 80px;
+
+    &__nav {
+        background: #FFFFFF;
+        border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+        padding: 16px 0;
+        box-shadow: $shadow-sm;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+
+        &-inner {
+            @include flex-between;
+        }
+
+        &-logo {
+            font-family: $font-serif;
+            font-size: 1.4rem;
+            color: $color-text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            span {
+                font-family: $font-script;
+                color: $color-rose;
+                font-size: 1.8rem;
+            }
+
+            small {
+                font-family: $font-sans;
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                background: $color-gold-subtle;
+                color: $color-gold-dark;
+                padding: 4px 10px;
+                border-radius: $radius-full;
+            }
+        }
+
+        &-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        &-user {
+            font-size: 0.85rem;
+            color: $color-text-muted;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            strong {
+                color: $color-gold-dark;
+            }
+
+            @include mobile {
+                display: none;
+            }
+        }
+    }
+
+    // Tarjetas de Métricas KPI
+    &__metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin: 36px 0;
+
+        @include tablet {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__metric-card {
+        background: #FFFFFF;
+        border: 1px solid rgba(197, 160, 89, 0.2);
+        border-radius: $radius-lg;
+        padding: 24px 22px;
+        box-shadow: $shadow-card;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        transition: $transition-smooth;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: $shadow-md;
+            border-color: rgba(197, 160, 89, 0.4);
+        }
+
+        &-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: $color-gold-subtle;
+            color: $color-gold-dark;
+            @include flex-center;
+            flex-shrink: 0;
+
+            &--rose {
+                background: rgba(194, 123, 127, 0.12);
+                color: $color-rose;
+            }
+
+            &--teal {
+                background: rgba(42, 157, 143, 0.12);
+                color: #2A9D8F;
+            }
+
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        &-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &-number {
+            font-family: $font-serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            line-height: 1;
+            color: $color-text;
+            margin-bottom: 4px;
+        }
+
+        &-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: $color-text-muted;
+        }
+    }
+
+    // Pestañas / Tabs
+    &__tabs {
+        display: flex;
+        gap: 12px;
+        border-bottom: 2px solid rgba(197, 160, 89, 0.2);
+        margin-bottom: 24px;
+    }
+
+    &__tab-btn {
+        background: transparent;
+        border: none;
+        padding: 12px 24px;
+        font-family: $font-sans;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: $color-text-muted;
+        cursor: pointer;
+        position: relative;
+        bottom: -2px;
+        border-bottom: 3px solid transparent;
+        transition: $transition-fast;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        &:hover {
+            color: $color-gold-dark;
+        }
+
+        &.active {
+            color: $color-gold-dark;
+            border-bottom-color: $color-gold;
+        }
+    }
+
+    // Panel de Contenido
+    &__tab-content {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+
+    // Barra de Búsqueda y Filtro
+    &__toolbar {
+        @include flex-between;
+        margin-bottom: 20px;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    &__search {
+        position: relative;
+        flex: 1;
+        max-width: 380px;
+
+        input {
+            width: 100%;
+            padding: 10px 16px 10px 38px;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-radius: $radius-full;
+            font-family: $font-sans;
+            font-size: 0.88rem;
+            outline: none;
+            background: #FFFFFF;
+
+            &:focus {
+                border-color: $color-gold;
+                box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
+            }
+        }
+
+        svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #A39B95;
+        }
+    }
+
+    // Tablas de Datos
+    &__table-wrapper {
+        background: #FFFFFF;
+        border-radius: $radius-lg;
+        border: 1px solid rgba(197, 160, 89, 0.2);
+        box-shadow: $shadow-card;
+        overflow-x: auto;
+    }
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.9rem;
+
+        th {
+            background: #FAF7F2;
+            color: $color-text-muted;
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            color: $color-text;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(197, 160, 89, 0.03);
+        }
+    }
+
+    // Badges de Estado
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: $radius-full;
+        font-size: 0.78rem;
+        font-weight: 600;
+        white-space: nowrap;
+
+        &--confirmed {
+            background: rgba(42, 157, 143, 0.12);
+            color: #2A9D8F;
+        }
+
+        &--declined {
+            background: rgba(194, 123, 127, 0.12);
+            color: $color-rose;
+        }
+
+        &--count {
+            background: $color-gold-subtle;
+            color: $color-gold-dark;
+            padding: 2px 8px;
+            font-size: 0.72rem;
+            border-radius: $radius-full;
+        }
+    }
+}

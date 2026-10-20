@@ -1,0 +1,9 @@
+/vendor/
+.env
+.env.backup
+.DS_Store
+Thumbs.db
+*.log
+docker/mysql/data/
+/bin/migrate_admin_users.php
+/bin/migrate-remote.php

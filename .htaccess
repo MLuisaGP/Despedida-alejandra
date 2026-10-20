@@ -1,0 +1,90 @@
+# ==============================================================================
+# ARCHIVO DE CONFIGURACIÓN APACHE (.htaccess) - HOSTGATOR / CPANEL
+# Proyecto: Despedida de Solteros - Alejandra & Jesús
+# ==============================================================================
+
+# 1. Seguridad: Deshabilitar listado de directorios
+Options -Indexes
+
+# 2. Seguridad: Proteger archivos de configuración sensibles (.env, composer, git, docker)
+<FilesMatch "^\.(env|git|htaccess)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<FilesMatch "(composer\.(json|lock)|Dockerfile|docker-compose\.yml|\.example|\.log|\.sql)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 3. Motor de Reescritura de URLs
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Bloquear acceso HTTP directo a carpetas internas del backend
+    RewriteRule ^(src|docker|bin|vendor)(/.*)?$ - [F,L,NC]
+
+    # Redirigir si alguien escribe explícitamente '/public/' en el navegador a la URL limpia
+    RewriteCond %{THE_REQUEST} \s/+public/(?:index\.php|index)?[\s?] [NC]
+    RewriteRule ^ / [R=301,L]
+
+    RewriteCond %{THE_REQUEST} \s/+public/(.+?)\.php[\s?] [NC]
+    RewriteRule ^ /%1 [R=301,L]
+
+    RewriteCond %{THE_REQUEST} \s/+public/([^\s?]*) [NC]
+    RewriteRule ^ /%1 [R=301,L]
+
+    # Redirigir si se escribe .php en la URL a su versión limpia
+    RewriteCond %{THE_REQUEST} \s/+(?:index\.php|index)[\s?] [NC]
+    RewriteRule ^ / [R=301,L]
+
+    RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
+    RewriteRule ^ /%1 [R=301,L]
+
+    # Rutas del Panel de Administración
+    RewriteRule ^admin/logout/?$ public/admin.php?action=logout [QSA,L]
+    RewriteRule ^admin/export/?$ public/admin.php?action=export_rsvp [QSA,L]
+    RewriteRule ^admin/?$ public/admin.php [QSA,L]
+
+    # Rutas de la API REST
+    RewriteRule ^api/(.*)$ public/api.php?endpoint=$1 [QSA,L]
+    RewriteRule ^api/?$ public/api.php [QSA,L]
+
+    # Servir archivos estáticos directamente desde public/ si existen (assets, css, js, imágenes)
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^(assets/.*|favicon\..*|robots\.txt)$ public/$1 [L,NC]
+
+    # Servir favicon.ico
+    RewriteRule ^favicon\.ico$ public/favicon.ico [L]
+
+    # Ruta Principal (OnePage)
+    RewriteRule ^index/?$ public/index.php [QSA,L]
+    RewriteRule ^$ public/index.php [QSA,L]
+
+    # Fallback para cualquier otro recurso alojado en public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# 4. Cabeceras de Seguridad HTTP
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# 5. Codificación UTF-8 predeterminada
+AddDefaultCharset UTF-8

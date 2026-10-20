@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: despedida_app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - DB_HOST=sh00010.hostgator.mx
+      - DB_PORT=3306
+      - DB_NAME=feffbmis_despedida_alejandra
+      - DB_USER=feffbmis_admin
+      - DB_PASS=Be9xQP63jJipZqvv
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - despedida_net
+
+  db:
+    image: mysql:8.0
+    container_name: despedida_mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_despedida_pass
+      MYSQL_DATABASE: despedida_db
+      MYSQL_USER: despedida_user
+      MYSQL_PASSWORD: despedida_pass_2026
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_despedida_pass"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - despedida_net
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  despedida_net:
+    driver: bridge

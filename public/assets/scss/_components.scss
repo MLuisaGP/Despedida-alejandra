@@ -1,0 +1,231 @@
+// ==========================================
+// COMPONENTES REUTILIZABLES
+// ==========================================
+
+@import "variables";
+@import "mixins";
+
+// --- BOTONES ---
+.btn {
+    @include button-luxury;
+
+    &--gold {
+        background: $gradient-gold;
+        color: #FFFFFF;
+        box-shadow: 0 8px 20px rgba(197, 160, 89, 0.35);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(197, 160, 89, 0.45);
+            filter: brightness(1.05);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    &--outline {
+        background: transparent;
+        color: $color-gold-dark;
+        border: 1px solid $color-gold;
+
+        &:hover {
+            background: $color-gold;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+    }
+
+    &--whatsapp {
+        background: #25D366;
+        color: #FFFFFF;
+        font-size: 0.85rem;
+        padding: 10px 22px;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+
+        &:hover {
+            background: #20BA5A;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        }
+    }
+
+    &--copy {
+        background: $color-gold-subtle;
+        color: $color-gold-dark;
+        border: 1px solid rgba(197, 160, 89, 0.3);
+        padding: 6px 14px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        border-radius: $radius-full;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: $transition-fast;
+
+        &:hover {
+            background: $color-gold;
+            color: #FFFFFF;
+            border-color: $color-gold;
+        }
+
+        &.copied {
+            background: #2A9D8F;
+            color: #FFFFFF;
+            border-color: #2A9D8F;
+        }
+    }
+
+    &--full {
+        width: 100%;
+    }
+
+    &:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+}
+
+// --- FORMULARIOS ---
+.form {
+    &__group {
+        margin-bottom: 22px;
+        text-align: left;
+    }
+
+    &__label {
+        display: block;
+        font-family: $font-sans;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: $color-text;
+        margin-bottom: 8px;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+
+        .required {
+            color: $color-rose;
+            margin-left: 2px;
+        }
+    }
+
+    &__control {
+        width: 100%;
+        padding: 14px 18px;
+        font-family: $font-sans;
+        font-size: 0.95rem;
+        color: $color-text;
+        background-color: #FAF8F5;
+        border: 1px solid rgba(197, 160, 89, 0.3);
+        border-radius: $radius-md;
+        transition: $transition-smooth;
+        outline: none;
+
+        &::placeholder {
+            color: #A39B95;
+            font-style: italic;
+        }
+
+        &:focus {
+            background-color: #FFFFFF;
+            border-color: $color-gold;
+            box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.15);
+        }
+    }
+
+    &__textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    &__select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C5A059' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 18px center;
+        background-size: 14px;
+        cursor: pointer;
+    }
+
+    &__hint {
+        font-size: 0.8rem;
+        color: $color-text-muted;
+        margin-top: 6px;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+
+        @include mobile {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+    }
+}
+
+// --- TARJETAS ---
+.card {
+    @include card-luxury;
+    padding: 36px 32px;
+
+    @include mobile {
+        padding: 24px 20px;
+    }
+}
+
+// --- TOAST NOTIFICATIONS ---
+.toast-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 380px;
+
+    @include mobile {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+    }
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #FFFFFF;
+    border-radius: $radius-md;
+    border-left: 4px solid $color-gold;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.4s ease;
+
+    &.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    &--success {
+        border-left-color: #2A9D8F;
+    }
+
+    &--error {
+        border-left-color: $color-rose;
+    }
+
+    &__text {
+        font-size: 0.9rem;
+        color: $color-text;
+    }
+}

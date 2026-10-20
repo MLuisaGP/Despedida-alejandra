@@ -1,0 +1,84 @@
+// ==========================================
+// MIXINS DE UTILIDAD SCSS
+// ==========================================
+
+@import "variables";
+
+// Centrado Flexbox
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+// Media Queries Responsive
+@mixin mobile {
+    @media (max-width: #{$bp-mobile}) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (max-width: #{$bp-tablet}) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{$bp-desktop}) {
+        @content;
+    }
+}
+
+// Estilo de Tarjeta Elegante
+@mixin card-luxury {
+    background: $color-bg-card;
+    border-radius: $radius-lg;
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    box-shadow: $shadow-card;
+    transition: $transition-smooth;
+
+    &:hover {
+        border-color: rgba(197, 160, 89, 0.45);
+        box-shadow: $shadow-lg;
+    }
+}
+
+// Texto con brillo dorado
+@mixin text-gold-gradient {
+    background: $gradient-gold;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+// Botón Estilo Joya / Dorado
+@mixin button-luxury {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 32px;
+    font-family: $font-sans;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: $radius-full;
+    cursor: pointer;
+    transition: $transition-smooth;
+    border: none;
+    outline: none;
+}
