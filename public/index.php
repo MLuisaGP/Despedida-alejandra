@@ -367,14 +367,14 @@ try {
             <div class="container container--narrow">
                 <div class="section-header">
                     <span class="section-header__tag">Lluvia de Sobres</span>
-                    <h2 class="section-header__title">Transferencia para el Sobre</h2>
+                    <h2 class="section-header__title">Transferencia o Sobre</h2>
                     <div class="section-header__divider">
                         <svg viewBox="0 0 24 24">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                         </svg>
                     </div>
                     <p class="section-header__subtitle">
-                        Su presencia es nuestro más valioso regalo en esta velada. Para quienes deseen acompañarnos con un detalle, hemos dispuesto la lluvia de sobres únicamente mediante transferencia bancaria.
+                        Su presencia es nuestro regalo más valioso en esta velada tan especial. Si desean acompañarnos con un detalle, hemos dispuesto la opción de lluvia de sobres, ya sea mediante un <strong>sobre tradicional</strong> o a través de una <strong>transferencia bancaria</strong>.
                     </p>
                 </div>
 
@@ -508,7 +508,7 @@ try {
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
                             <svg id="rsvp-success-icon-heart" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                         </div>
 
